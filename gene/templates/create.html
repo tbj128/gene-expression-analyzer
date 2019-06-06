@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'header.html' %}
+    <title>New Project - GEA</title>
+  </head>
+
+  <body>
+    {% include 'navigation.html' %}
+    {% include 'loading-bar-processing.html' %}
+
+    <div id="welcome" class="container">
+      <div class="section-heading project-heading">
+          <h2><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;New Project</h2>
+      </div>
+
+      <div id="welcome-container" class="row welcome-container">
+        <input type="text" class="form-control upload-name" id="inputName" name="inputName" placeholder="Project Name" required>
+        <div class="help-block with-errors"></div>
+
+        <div id="otu-upload-container">
+          <div id="otu-table-upload-container" class="row upload-item">
+            <div>
+              <div class="col-md-10">
+                <h3 style="margin-top:0px"><i class="fa fa-table"></i>&nbsp;&nbsp;Gene Expression Table</h3>
+                <p>....</p>
+<p>Example: </p>
+<pre><code>IDENTIFIER	SAMPLE_1	SAMPLE_2 ...
+DDR1	9.84988	9.80084 ...
+RFC2	7.13807	7.10172 ...
+...
+</code></pre>
+              </div>
+              <div class="col-md-2 upload-status">
+                <form id="otuTableForm" action="/upload" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="category" value="otuTable" />
+                  <span id="otuTableOK" style="display:none;font-size:24px;margin:0 20px 0 0;vertical-align: middle;"><i class="glyphicon glyphicon-ok"></i></span>
+                  <span id="otuTableLoading" style="display:none;">
+                    <i class="fa fa-spinner upload-loading"></i>
+                  </span>
+                  <span id="otuTableWrapper" class="btn btn-default btn-file">
+                      <span id="otuTableText">Upload</span> <input type="file" name="upload" id="otuTable" accept=".tsv,.txt,.shared,.csv" />
+                  </span>
+                </form>
+              </div>
+              <div style="clear:both"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div id="sample-metadata-upload-container" class="row upload-item" >
+            <div class="col-md-10">
+              <h3 style="margin-top:0px"><i class="fa fa-info"></i>&nbsp;&nbsp;Sample Metadata<span class="biom-only"> (Optional)</span></h3>
+              <p>Tab-delimited or comma-delimited file with each row representing an sample/group ID and its corresponding metadata. Example metadata:</p>
+
+<pre><code>Sample	body_site	disease	...
+SAMPLE_1	gut		Disease	...
+SAMPLE_2	skin		Control	...
+</code></pre>
+            </div>
+            <div class="col-md-2 upload-status">
+              <form id="otuMetadataForm" action="/upload" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="category" value="otuMetadata" />
+                <span id="otuMetadataOK" style="display:none;font-size:24px;margin:0 20px 0 0;vertical-align: middle;"><i class="glyphicon glyphicon-ok"></i></span>
+                <span id="otuMetadataLoading" style="display:none;">
+                  <i class="fa fa-spinner upload-loading"></i>
+                </span>
+                <span id="otuMetadataWrapper" class="btn btn-default btn-file">
+                    <span id="otuMetadataText">Upload</span> <input type="file" name="upload" id="otuMetadata" accept=".txt,.tsv" />
+                </span>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row upload-item" style="background:none !important;box-shadow:none !important;text-align:center;padding-top:0px;padding-right:0px;">
+          <form data-toggle="validator" method="POST" action="/create">
+            <input type="hidden" id="projectName" name="projectName" value="" />
+            <input type="hidden" id="projectOTUTableName" name="projectOTUTableName" value="" />
+            <input type="hidden" id="projectSampleIDName" name="projectSampleIDName" value="" />
+            <button id="upload-submit" type="submit" class="btn btn-primary" style="width:180px;" disabled>Create</button>
+          </form>
+        </div>
+      </div>
+    </div><!-- /.container -->
+
+    {% include 'footer-full.html' %}
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/core.upload.js"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+  </body>
+</html>

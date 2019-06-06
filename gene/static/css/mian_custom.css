@@ -1,0 +1,512 @@
+html, body {
+  height:100%;
+}
+
+body {
+  padding-top: 50px;
+  background-color:#FFF;
+}
+
+hr {
+  margin-bottom:0px;
+}
+
+.text-muted {
+  color: #999;
+}
+
+.loading {
+  position: fixed;
+  top:50px;
+  left:50%;
+  margin-left: -70px;
+  width:140px;
+  text-align: center;
+  padding:12px 24px;
+  background:rgb(31, 119, 180);
+  color:#FFF;
+  border-radius:0 0 6px 6px;
+  z-index:9999;
+}
+
+.loading-large {
+  position: fixed;
+  top:50px;
+  left:50%;
+  margin-left: -180px;
+  width:360px;
+  text-align: center;
+  padding:12px 24px;
+  background:rgb(31, 119, 180);
+  color:#FFF;
+  border-radius:0 0 6px 6px;
+  z-index:9999;
+}
+
+.loading .upload-loading {
+  margin-right: 4px !important;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS */
+  #ie-warning {
+    display: block !important;
+  }
+}
+
+.message {
+  position: fixed;
+  top:50px;
+  left:50%;
+  margin-left: -160px;
+  width:320px;
+  text-align: center;
+  padding:12px 24px;
+  color:#FFF;
+  border-radius:0 0 6px 6px;
+}
+
+.message-success {
+  background:#3c763d;
+}
+
+.message-danger {
+  background:#a41123;
+}
+
+.overlay {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#000;
+  opacity:0.75;
+}
+
+.highlight {
+  background-color: #44B9DB;
+  padding: 36px 64px;
+  color: #FFF;
+}
+
+.highlight-light {
+  background-color: #FFF;
+  padding: 36px 64px;
+  color: #999;
+}
+
+.highlight-default {
+  border-top:1px solid #E8E8E8;
+  color: #999;
+}
+
+.content-wrapper {
+  min-height: 100%;
+  margin-bottom: -42px; 
+}
+
+.content-wrapper:after {
+  height: 42px;
+  content: "";
+  display: block;
+}
+
+.footer-full {
+  height:42px;
+  font-size:12px;
+  line-height: 40px;
+}
+
+.footer-viz {
+  height:42px;
+  padding-left: 320px !important;
+  font-size:12px;
+  line-height: 40px;
+}
+
+.editor {
+	position: fixed;
+	left:0px;
+	top:50px;
+	bottom:0px;
+	width:360px;
+	border-right:1px solid #E8E8E8;
+    background:#FAFAFA;
+    overflow-y: auto;
+    z-index: 999;
+}
+
+.editor .pad-top {
+    margin-top: 20px;
+}
+
+.editor .pad-sides {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.editor label {
+	margin-top:12px;
+}
+
+.editor h3 {
+    margin-top:10px;
+}
+
+.editor .analysis-help {
+    font-size: 0.75em;
+    padding-bottom: 3px;
+    padding-left: 3px;
+}
+
+.editor .pad-bottom {
+	margin-bottom:4px;
+}
+
+.editor .inner-control-label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+}
+
+.editor .bootstrap-tagsinput {
+    position: relative;
+}
+
+.editor .panel-heading {
+    padding-left: 20px;
+}
+
+.editor .panel-body {
+    padding-top: 0px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.editor .panel-heading .accordion-toggle {
+    display:inline-block;
+    width: 100%;
+}
+
+.editor .panel-heading .accordion-toggle:hover, .panel-heading .accordion-toggle:focus {
+    text-decoration: none;
+}
+
+.editor .panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.editor .panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+.welcome-container {
+	margin-top:60px;
+}
+
+.analysis-container {
+	margin-left:360px;
+	padding:20px;
+}
+
+.upload-item {
+  background: #FFF;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.12);
+  width: 980px;
+  margin: 0 auto 16px auto;
+  padding:36px 48px;
+}
+
+.upload-item code {
+    font-size: 10px;
+}
+
+.upload-name {
+  width: 720px;
+  margin: 0 auto 16px auto;
+}
+
+.upload-status {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.upload-loading {
+  font-size:24px;
+  margin:0 20px 0 0;
+  vertical-align: middle;
+  -webkit-animation:spin 0.5s linear infinite;
+  -moz-animation:spin 0.5s linear infinite;
+  animation:spin 0.5s linear infinite;
+  z-index: 9999;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+/**
+ * Navbar
+ */
+.navbar {
+	border-bottom: 1px solid #E8E8E8;
+	background:#FFF;
+}
+
+.navbar .container {
+	width:100%;
+	margin-left:6px;
+}
+
+.navbar-brand {
+  padding: 3px 15px 0 15px !important;
+}
+
+.navbar-brand img {
+  width:42px;
+  height:42px;
+}
+
+.navbar-brand img:hover {
+  opacity: 0.9;
+}
+
+/**
+ * Projects Page
+ */
+
+.project-heading {
+  margin:32px auto 32px auto;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.project-container {
+  padding-bottom:24px;
+}
+
+.project-main {
+  border-left: 1px solid #E8E8E8;
+}
+
+.project-new {
+  padding-left:24px;
+  padding-right:24px;
+}
+
+.project-delete {
+  float: right;
+  margin-top: -32px;
+  margin-right: 2px;
+}
+
+.project-item {
+  width:100%;
+  padding:24px;
+  background:#FFF;
+  margin-bottom:6px;
+}
+
+.project-item-meta {
+  width:92px;
+  text-align:right;
+}
+
+.project-item th, .project-item td {
+  word-wrap: break-word;
+}
+
+.project-no-projects {
+  margin: 64px 64px 64px 424px;
+  color: #999;
+  padding: 20px;
+}
+
+.project-empty {
+  margin: 64px 64px 64px 424px;
+  color: #999;
+  padding: 20px;
+  border: 1px dashed #AAA;
+}
+
+.project-empty .col-md-3 {
+  text-align: center;
+}
+
+.project-no-projects i, .project-empty i {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/**
+ * D3 Custom
+ */
+
+#download-container {
+  padding: 6px 6px 0 0px;
+  height: 34px;
+  text-align: right;
+}
+
+#download-container button {
+  margin-left: 3px;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.axis text {
+  font-size: 14px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.whisker line,
+.median line,
+.box rect, {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.analysis-container circle {
+  fill: #242C70;
+  stroke: none;
+}
+
+.analysis-container circle:hover {
+  fill: orange !important;
+  stroke: orange;
+  opacity: 1;
+}
+
+.outlier {
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.point {  
+  opacity: 1; 
+}
+
+.axis path {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+.axis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+.tooltip {
+    position: absolute;
+    background:#FFF;
+    padding: 4px 8px;
+    font: 12px sans-serif;
+    border: 1px solid steelblue;
+    border-radius: 4px;
+    min-width:128px;
+    margin-right:12px;
+    pointer-events: none;
+}
+
+/**
+ * Form
+ */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.project-btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width:80px;
+    cursor: pointer;
+    min-height: 100%;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+/* Progress Bar */
+#progress {
+	position: fixed;
+	z-index: 99999;
+	top: 0;
+	left: -6px;
+	width: 0%;
+	height: 2px;
+	background: #006ebb;
+	border-radius: 1px;
+	transition: width 500ms ease-out,opacity 400ms linear
+}
+#progress.done {
+	opacity:0
+}
+#progress dd, #progress dt {
+	position: absolute;
+	top:0;
+	height:2px;
+	box-shadow: #006ebc 1px 0 6px 1px;
+	border-radius:100%
+}
+#progress dd {
+	opacity:1;
+	width:20px;
+	right:0;
+	clip:rect(-6px,22px,14px,10px)
+}
+#progress dt {
+	opacity:1;
+	width:180px;
+	right:-80px;
+	clip:rect(-6px,90px,14px,-6px)
+}
+@keyframes pulse {
+	30% {
+		opacity:1
+	}
+	60% {
+		opacity:0
+	}
+	100% {
+		opacity:1
+	}
+}
+#progress.waiting dd, #progress.waiting dt {
+	animation:pulse 2s ease-out 0s infinite
+}

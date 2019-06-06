@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>Fisher Exact - GEA</title>
+</head>
+
+<body>
+{% include 'navigation.html' %}
+{% include 'loading-bar.html' %}
+
+<div id="editor" class="editor">
+    <h3 class="pad-sides pad-top"><i class="fa fa-th-large"></i>&nbsp;&nbsp;Fisher Exact <i class="fa fa-info-circle" data-toggle="popover" data-title="Fisher Exact" data-content="Applies the Fisher Exact Test to a contingency table built based on the two selected pairwise metadata values<br /><br />This test relies on the R fisher.test function in the stats package <a href='https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html' target='_blank'>here</a>" data-trigger="hover"></i></h3>
+
+    {% include 'project_list.html' %}
+
+    <hr/>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% include 'filtering_options.html' %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalysisParameters">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" role="button" data-toggle="collapse" href="#analysisParameters" aria-expanded="true" aria-controls="analysisParameters">
+                  Analysis Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="analysisParameters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAnalysisParameters">
+              <div class="panel-body">
+
+                <label class="control-label">Taxonomic Level <i class="fa fa-info-circle" data-toggle="popover" data-title="Taxonomic Level" data-content="The OTUs will be grouped together (by summing the OTU values) at the selected taxonomic level before the analysis is applied." data-trigger="hover"></i></label>
+                <select id="taxonomy" name="taxonomy" class="form-control pad-bottom">
+                    <option value="Kingdom">Kingdom</option>
+                    <option value="Phylum">Phylum</option>
+                    <option value="Class">Class</option>
+                    <option value="Order">Order</option>
+                    <option value="Family">Family</option>
+                    <option value="Genus">Genus</option>
+                    <option value="Species">Species</option>
+                    <option value="OTU" selected>OTU</option>
+                </select>
+
+                <label class="control-label">Categorical Variable <i class="fa fa-info-circle" data-toggle="popover" data-title="Categorical Variable" data-content="Indicate which metadata should be used as the grouping to build the contingency table with" data-trigger="hover"></i></label>
+                <select id="catvar" name="catvar" class="form-control">
+                </select>
+
+                <label class="control-label">Pairwise Comparison Variable <i class="fa fa-info-circle" data-toggle="popover" data-title="Pairwise Comparison Variables" data-content="The two unique values for the selected Categorical Variable field that will be used to build a contingency table."></i></label>
+                <select id="pwVar1" name="pwVar1" class="form-control" style="margin-bottom: 4px;">
+                </select>
+                <select id="pwVar2" name="pwVar2" class="form-control">
+                </select>
+
+                <label class="control-label">Min Presence Threshold  <i class="fa fa-info-circle" data-toggle="popover" data-title="Min Presence Threshold" data-content="In the Fisher Exact test, this parameter controls what constitutes whether a taxonomic item is 'present' in a given sample. By default, this is zero which means that a taxonomic item is present for a sample if it has a non-zero value for the sample. If this value was 10, this means that a taxonomic item must have a count of at least 10 for it to be considered present. "></i></label>
+                <input class="form-control" id="minthreshold" name="minthreshold" type="number" value="0"/>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div id="display-no-catvar" class="display-notification project-empty" style="display:none;">
+        <div class="row">
+            <div class="col-md-3">
+                <i class="fa fa-exclamation-circle fa-4x"></i>
+            </div>
+            <div class="col-md-9">
+                <h3>Choose a Categorical Variable Attribute</h3>
+                <p>
+                    The Fisher Exact test will involve building a presence/absence contingency table for each taxonomic group/OTU between two groups of samples (eg. Disease vs Control). <br />The taxonomic groups/OTUs which are most significantly different between the two groups will be selected.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% include 'notifications.html' %}
+    {% include 'download_container.html' %}
+
+    <div id="analysis-container" class="analysis-container" style="min-height:500px;">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Taxonomic Group/OTU</th>
+                <th>P-Value</th>
+                <th>Q-Value <i class="fa fa-info-circle" data-toggle="popover" data-title="Q-Value" data-content="Represents the P-Value with the False-Discovery Rate (FDR) correction" data-trigger="hover"></i></th>
+                <th><span id="cat1-present"></span> Present <i class="fa fa-info-circle" data-toggle="popover" data-title="Present" data-content="Number of samples where the taxonomic group/OTU was present" data-trigger="hover"></i></th>
+                <th><span id="cat1-tot"></span> Absent <i class="fa fa-info-circle" data-toggle="popover" data-title="Absent" data-content="Number of samples where the taxonomic group/OTU was absent" data-trigger="hover"></i></th>
+                <th><span id="cat2-present"></span> Present <i class="fa fa-info-circle" data-toggle="popover" data-title="Present" data-content="Number of samples where the taxonomic group/OTU was present" data-trigger="hover"></i></th>
+                <th><span id="cat2-tot"></span> Absent <i class="fa fa-info-circle" data-toggle="popover" data-title="Absent" data-content="Number of samples where the taxonomic group/OTU was absent" data-trigger="hover"></i></th>
+            </tr>
+            </thead>
+            <tbody id="stats-rows">
+            </tbody>
+        </table>
+    </div><!-- /.container -->
+
+    <div id="push" style="height:42px;"></div>
+</div>
+
+{% include 'footer-viz-d3v4.html' %}
+
+
+<!-- Include custom JS here -->
+<script src="/static/js/core.fisher.exact.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+</body>
+</html>

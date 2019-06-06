@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>Taxonomic Tree View - GEA</title>
+</head>
+
+<style>
+
+    .tree-view .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+      shape-rendering: auto;
+    }
+
+    .tree-view .node {
+      font: 12px sans-serif;
+    }
+
+    .tree-view .node-abun {
+      stroke-width: 0px !important;
+    }
+
+    .tree-view .node-abun:hover {
+      stroke-width: 1px !important;
+    }
+
+    .tree-view .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
+
+    .tree-view div.tooltip { 
+        position: absolute;
+        background:#FFF;
+        padding: 4px 8px;       
+        font: 12px sans-serif;
+        border: 1px solid steelblue;
+        border-radius: 4px;     
+        min-width:200px;
+        margin-right:12px;
+        pointer-events: none;     
+    }
+
+
+</style>
+
+<body>
+{% include 'navigation.html' %}
+{% include 'loading-bar.html' %}
+
+<div id="editor" class="editor">
+    <h3 class="pad-sides pad-top"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Taxonomic Tree View <i class="fa fa-info-circle" data-toggle="popover" data-title="Taxonomic Tree View" data-html="true" data-content="Renders a taxonomic tree up until the specified taxonomic level. At the lowest taxonomic level, the tree shows either the non-zero count or the mean/median/max abundances of all OTU-Samples that fall under the taxonomic group. <br /><br />Because each taxonomic group can contain one or more OTUs, the OTU-Sample unit is defined as the product of the number of OTUs under the taxonomic group and the number of samples." data-trigger="hover"></i></h3>
+
+    {% include 'project_list.html' %}
+
+    <hr/>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% include 'filtering_options.html' %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalysisParameters">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" role="button" data-toggle="collapse" href="#analysisParameters" aria-expanded="true" aria-controls="analysisParameters">
+                  Visualization Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="analysisParameters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAnalysisParameters">
+              <div class="panel-body">
+
+                <label class="control-label">Categorical Variable <i class="fa fa-info-circle" data-toggle="popover" data-title="Categorical Variable" data-content="The tree visualization will be broken down by the selected categorical metadata variable." data-trigger="hover"></i></label>
+                <select id="catvar" name="catvar" class="form-control">
+                </select>
+
+                <label class="control-label">Taxonomic Display Level <i class="fa fa-info-circle" data-toggle="popover" data-title="Taxonomic Display Level" data-content="The taxonomic tree will be rendered up until this taxonomic level."></i></label>
+                <select id="taxonomy_display_level" name="taxonomy_display_level" class="form-control pad-bottom">
+                    <option value="Kingdom">Kingdom</option>
+                    <option value="Phylum">Phylum</option>
+                    <option value="Class" selected>Class</option>
+                    <option value="Order">Order</option>
+                    <option value="Family">Family</option>
+                    <option value="Genus">Genus</option>
+                    <option value="Species">Species</option>
+                    <option value="OTU">OTU</option>
+                </select>
+
+                <label class="control-label">Metric <i class="fa fa-info-circle" data-toggle="popover" data-title="Metric" data-content="Indicate which metric to display: <ul><li><strong>Non-Zero OTU-Sample Counts</strong> The number of OTU-samples with a non-zero count for the indicated taxonomic group. The OTU-sample represents the product of the number of samples and the number of OTUs that fall under the taxonomic group.</li><li><strong>Non-Zero Sample Counts</strong> The number of samples with a non-zero count for the indicated taxonomic group</li><li><strong>Mean OTU-Sample Abundance</strong> The mean of the counts across all samples and OTUs that fall under the indicated taxonomic group</li><li><strong>Median OTU-Sample Abundance</strong> The median of the counts across all samples and OTUs that fall under the indicated taxonomic group</li><li><strong>Max OTU-Sample Abundance</strong> The max of the counts across all samples and OTUs that fall under the indicated taxonomic group</li></ul>"></i></label>
+                <select id="display_values" name="display_values" class="form-control pad-bottom">
+                    <option value="nonzero">Non-Zero OTU-Sample Counts</option>
+                    <option value="nonzerosample">Non-Zero Sample Counts</option>
+                    <option value="avgabun">Mean OTU-Sample Abundance</option>
+                    <option value="medianabun">Median OTU-Sample Abundance</option>
+                    <option value="maxabun">Max OTU-Sample Abundance</option>
+                </select>
+
+                <label class="control-label">Exclude Unclassified <i class="fa fa-info-circle" data-toggle="popover" data-title="Exclude Unclassified" data-content="<ul><li><strong>Yes</strong> Ignores all counts coming from OTUs unclassified at the specified taxonomic level</li><li><strong>No</strong> Include counts from all OTUs</li></ul>"></i></label>
+                <select id="exclude_unclassified" name="exclude_unclassified" class="form-control pad-bottom">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    {% include 'notifications.html' %}
+    {% include 'download_container.html' %}
+
+    <div id="analysis-container" class="analysis-container tree-view" style="min-height:500px;">
+    </div><!-- /.container -->
+
+    <div id="push" style="height:42px;"></div>
+</div>
+
+{% include 'footer-viz-d3v4.html' %}
+
+<!-- Include custom JS here -->
+<script src="/static/js/core.tree.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+</body>
+</html>

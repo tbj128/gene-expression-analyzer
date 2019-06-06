@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'header.html' %}
+    <title>Projects - GEA</title>
+    <style>
+      .blackout {
+        opacity: .5;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1040;
+        background-color: #000;
+      }
+
+      .change-box {
+        position: fixed;
+        top: 80px;
+        left:50%;
+        width:400px;
+        padding:42px;
+        margin-left:-200px;
+        z-index: 1042;
+        background:#FFF;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="ie-warning" class="alert alert-danger" style="display:none;">
+        <strong>Internet Explorer Not Supported</strong> Mian works best on Chrome, Safari, or Firefox. Some features may not be available on Internet Explorer.
+    </div>
+
+    {% include 'navigation.html' %}
+    {% include 'loading-bar-processing.html' %}
+
+    {% if demo %}
+    <div class="alert alert-info">
+      <strong>Demo Mode</strong> Try analysing the sample COPD dataset by using the different tools in the dropdown menu above. Datasets created in the demo account may be deleted at any time. <br />Want a permanent space? <a href="logout?signup=1">Create an account today</a>
+    </div>
+    {% endif %}
+
+    {% if newSignup %}
+    <div class="alert alert-success">
+      <strong>Welcome!</strong> Start by creating a new project below. 
+    </div>
+    {% endif %}
+
+    {% if not demo and projectNames|length > 0 and status == "" %}
+      <div class="alert alert-info">
+        Access the different data analysis tools using the dropdown menu above
+      </div>
+    {% endif %}
+
+    {% if status == "-1" %}
+    <div class="alert alert-danger">
+      <strong>Oh no!</strong> Something went wrong - please double check your input formats and try again</a>
+    </div>
+    {% endif %}
+
+    {% if status == "-3" %}
+    <div class="alert alert-danger">
+      <strong>Invalid Gene Expression Table</strong> Make sure your Gene Expression Table format is correct (ie. each column is an sample and each row is a gene) and try again
+    </div>
+    {% endif %}
+
+    {% if status == "-5" %}
+    <div class="alert alert-danger">
+      <strong>Invalid Sample Metadata File</strong> Make sure your sample metadata format is correct and try again
+    </div>
+    {% endif %}
+
+    {% if status == "-7" %}
+    <div class="alert alert-danger">
+      <strong>Missing Sample ID(s)</strong> The following sample IDs in the Gene Expression Table do not have a corresponding entry in the sample metadata file: {{message}}
+    </div>
+    {% endif %}
+
+    {% if status == "-8" %}
+    <div class="alert alert-danger">
+      <strong>Invalid OTU Data Type</strong> The Gene Expression Table contains values which are not integers or float. Please double check and try again.
+    </div>
+    {% endif %}
+
+    <div id="otu-table-modified" class="message message-success" style="display:none;">
+      <strong>Success</strong> Your changes have been successfully applied.
+    </div>
+
+    <div id="otu-table-modified-error" class="message message-danger" style="display:none;">
+      <strong>Error</strong> Your changes were unable to be applied.
+    </div>
+
+    <div id="blackout" class="blackout" style="display:none;"></div>
+
+    <div class="content-wrapper">
+      <div class="container project-container">
+        <div class="section-heading project-heading">
+            <h2><i class="fa fa-folder"></i>&nbsp;&nbsp;Projects</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <a href="create" class="btn btn-primary project-new">New Project</a>
+          </div>
+          <div class="col-md-10 project-main">
+            {% if projectNames|length == 0 %}
+              <div class="project-no-projects">
+                <i class="fa fa-folder-o fa-4x"></i>
+                <h3>No projects yet</h3>
+                <p><small><a href="#" class="add-example-project"><i class="fa fa-plus"></i> Add an example project</a></small></p>
+              </div>
+            {% else %}
+              {% for projectName in projectNames %}
+                <div class="project-item" id="p-{{ projectNames[projectName]['pid'] }}">
+                  <h4>{{ projectNames[projectName]["project_name"] }}</h4>
+
+                  {% if not demo or (demo and not (projectNames[projectName]["project_name"] == "COPD Example Project" or projectNames[projectName]["project_name"] == "Tortoise Example Project" or projectNames[projectName]["project_name"] == "Butterfly Gut Microbiota Example Project")) %}
+                  <a title="Delete this project" href="javascript:void(0);" data-project="{{ projectNames[projectName]["pid"] }}" data-projectname="{{ projectNames[projectName]["project_name"] }}" class="project-delete"><i class="fa fa-trash"></i></a>
+                  {% endif %}
+
+                  {% if demo and projectNames[projectName]["project_name"] == "COPD Example Project" %}
+                  <p><small class="text-muted">This example uses data from the Sze et al. study <a href="https://www.atsjournals.org/doi/full/10.1164/rccm.201502-0223OC" target="_blank">Host Response to the Lung Microbiome in Chronic Obstructive Pulmonary Disease</a></small></p>
+
+                  {% elif demo and projectNames[projectName]["project_name"] == "Tortoise Example Project" %}
+                  <p><small class="text-muted">This example uses data from the Weitzman et al. study <a href="https://royalsocietypublishing.org/doi/10.1098/rsos.181068" target="_blank">Host species, pathogens, and disease associated with divergent nasal microbial communities in tortoises</a></small></p>
+
+                  {% elif demo and projectNames[projectName]["project_name"] == "Butterfly Gut Microbiota Example Project" %}
+                  <p><small class="text-muted">This example uses data from the Ravenscraft et al. study <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1111/mec.15057" target="_blank">No evidence that gut microbiota impose a net cost on their butterfly host</a></small></p>
+                  {% endif %}
+
+                  <table class="table table-hover" style="table-layout:fixed;">
+                    <tbody>
+                      <tr>
+                        <th scope="row" class="project-fn col-md-5">
+                          {{ projectNames[projectName]["orig_otu_table_name"] }}&nbsp;<a class="download" data-downloadtype="otu" data-project="{{ projectNames[projectName]["pid"] }}" href="#" title="Download the Gene Expression Table"><i class="fa fa-download"></i></a>
+                        </th>
+                        <td class="col-md-3">Gene Expression Table</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" class="project-fn">{{ projectNames[projectName]["orig_sample_metadata_name"] }}&nbsp;<a class="download" data-downloadtype="sample_metadata" data-project="{{ projectNames[projectName]["pid"] }}" href="#" title="Download the sample metadata file"><i class="fa fa-download"></i></a></th>
+                        <td>Sample Metadata</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div id="push" style="height:42px;"></div>
+    </div>
+
+    {% include 'footer-full.html' %}
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/plugins/bootbox.min.js"></script>
+    <script src="/static/js/core.shared.js"></script>
+    <script src="/static/js/core.projects.js"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+  </body>
+</html>

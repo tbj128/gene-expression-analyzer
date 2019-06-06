@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>Boxplots - GEA</title>
+</head>
+
+<body>
+{% include 'navigation.html' %}
+{% include 'loading-bar.html' %}
+
+<div id="editor" class="editor">
+    <h3 class="pad-sides pad-top"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Boxplots <i class="fa fa-info-circle analysis-help" data-toggle="popover" data-title="Boxplots" data-content="Generates a series of boxplots based on a grouping parameter." data-trigger="hover"></i></h3>
+
+    {% include 'project_list.html' %}
+
+    <hr/>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% include 'filtering_options.html' %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalysisParameters">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" role="button" data-toggle="collapse" href="#analysisParameters" aria-expanded="true" aria-controls="analysisParameters">
+                  Visualization Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="analysisParameters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAnalysisParameters">
+              <div class="panel-body">
+                <label class="control-label">Categorical Variable  <i class="fa fa-info-circle" data-toggle="popover" data-title="Categorical Variable" data-content="Indicate which sample metadata should be used as the grouping variable"></i></label>
+                <select id="catvar" name="catvar" class="form-control">
+                </select>
+
+                <input id="taxonomy" type="hidden" value="OTU" />
+
+                <label class="control-label">Y-Axis Values  <i class="fa fa-info-circle" data-toggle="popover" data-title="Y-Axis Values" data-content="The numeric parameter that should be represented on the Y-axis. <br /><br />Note the special parameters below:<ul><li><strong>Gene Expression</strong> The sum of the specified gene abundance in each sample.</li><li><strong>Aggregate Abundance</strong> The total abundance of all genes within a sample</li><li><strong>Max/Min/Mean/Median</strong> The max/min/mean/median of all genes within a sample</li></ul>"></i></label>
+                <select id="yvals" name="yvals" class="form-control">
+                </select>
+
+                <div id="specific-taxonomy-container" style="margin-bottom: 200px;">
+                    <label id="specific-taxonomy-label" class="control-label">Gene(s) to Show <i class="fa fa-info-circle" data-toggle="popover" data-title="Select Gene(s)" data-content="Choose the genes whose summed abundances should be displayed on the boxplots." data-trigger="hover"></i></label>
+
+                    <div id="taxonomy-specific-typeahead-wrapper">
+                        <input id="specific-taxonomy-typeahead" type="text" data-background="" value="" />
+                    </div>
+
+                    <div id="colorvarContainer">
+                        <label class="control-label">Color Variable  <i class="fa fa-info-circle" data-toggle="popover" data-title="Color Variable" data-content="Determines which metadata parameter should control the color of the dots in the scatterplot"></i></label>
+                        <select id="colorvar" name="colorvar" class="form-control">
+                        </select>
+                    </div>
+                    
+                    {% include 'filtering_options_statistical_test.html' %}
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    {% include 'notifications-error.html' %}
+    <div id="display-no-results" class="display-notification project-empty" style="display:none;">
+        <div class="row">
+            <div class="col-md-3">
+                <i class="fa fa-asterisk fa-4x"></i>
+            </div>
+            <div class="col-md-9">
+                <h3>Add a Gene To Display</h3>
+                <p>
+                    No results were returned. This can happen if you have not added a gene (if the y-axis should display gene) or if you have applied a too strict filter.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% include 'download_container.html' %}
+
+    <div id="analysis-container" class="analysis-container" style="min-height:500px;">
+    </div><!-- /.container -->
+
+    <hr style="margin-top:0px; margin-bottom:0px;"/>
+    <div id="stats-container" class="analysis-container" style="display:none;">
+        <h4><span id="stats-type"></span> Summary</h4>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Category 1</th>
+                <th>Category 2</th>
+                <th>P-Value</th>
+            </tr>
+            </thead>
+            <tbody id="stats-rows">
+            </tbody>
+        </table>
+    </div><!-- /.container -->
+
+    <div id="push" style="height:42px;"></div>
+</div>
+
+{% include 'footer-viz-d3v4.html' %}
+
+<!-- Include custom JS here -->
+<script src="/static/js/core.shared.boxplots.js"></script>
+<script src="/static/js/core.boxplots.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+</body>
+</html>

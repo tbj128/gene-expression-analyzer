@@ -1,0 +1,100 @@
+<nav class="navbar navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img alt="mian" src="/static/img/gene_logo_small.png" /></a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visualize <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            {% if share %}
+            <li><a class="nav-link" href="/share/boxplots">Boxplots</a></li>
+            <!--<li><a class="nav-link" href="/share/composition_bar">Stacked Barplot (Composition)</a></li>-->
+            <!--<li><a class="nav-link" href="/share/composition_donut">Donut (Composition)</a></li>-->
+            <!--<li><a class="nav-link" href="/share/composition_heatmap">Heatmap (Composition)</a></li>-->
+            <!--<li><a class="nav-link" href="/share/heatmap">Heatmap (Correlation)</a></li>-->
+            <!--<li><a class="nav-link" href="/share/correlations">Scatterplot (Correlation)</a></li>-->
+            <!--<li><a class="nav-link" href="/share/correlation_network">Correlation Network</a></li>-->
+            <!--<li><a class="nav-link" href="/share/rarefaction">Rarefaction Curves</a></li>-->
+            <!--<li><a class="nav-link" href="/share/tree">Taxonomic Tree</a></li>-->
+            <!--<li><a class="nav-link" href="/share/table">Table</a></li>-->
+            {% else %}
+            <li><a class="nav-link" href="/boxplots">Boxplots</a></li>
+            <!--<li><a class="nav-link" href="/composition_bar">Barplot (Composition)</a></li>-->
+            <!--<li><a class="nav-link" href="/composition_donut">Donut (Composition)</a></li>-->
+            <!--<li><a class="nav-link" href="/composition_heatmap">Heatmap (Composition)</a></li>-->
+            <!--<li><a class="nav-link" href="/heatmap">Heatmap (Correlation)</a></li>-->
+            <!--<li><a class="nav-link" href="/correlations">Scatterplot (Correlation)</a></li>-->
+            <!--<li><a class="nav-link" href="/correlation_network">Correlation Network</a></li>-->
+            <!--<li><a class="nav-link" href="/rarefaction">Rarefaction Curves</a></li>-->
+            <!--<li><a class="nav-link" href="/tree">Taxonomic Tree</a></li>-->
+            <!--<li><a class="nav-link" href="/table">Table</a></li>-->
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Diversity <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            {% if share %}
+            <!--<li><a class="nav-link" href="/share/alpha_diversity">Alpha Diversity</a></li>-->
+            <!--<li><a class="nav-link" href="/share/beta_diversity">Beta Diversity</a></li>-->
+            <!--<li><a class="nav-link" href="/share/nmds">NMDS</a></li>-->
+            <!--<li><a class="nav-link" href="/share/pca">PCA</a></li>-->
+            {% else %}
+            <!--<li><a class="nav-link" href="/alpha_diversity">Alpha Diversity</a></li>-->
+            <!--<li><a class="nav-link" href="/beta_diversity">Beta Diversity</a></li>-->
+            <!--<li><a class="nav-link" href="/nmds">NMDS</a></li>-->
+            <!--<li><a class="nav-link" href="/pca">PCoA</a></li>-->
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Feature Selection <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            {% if share %}
+            <!--<li><a class="nav-link" href="/share/random_forest">Random Forest</a></li>-->
+            <!--<li><a class="nav-link" href="/share/glmnet">Generalized Linear Model</a></li>-->
+            <!--<li><a class="nav-link" href="/share/fisher_exact">Fisher Exact Test</a></li>-->
+            <!--<li><a class="nav-link" href="/share/differential_selection">Differential Selection</a></li>-->
+            <!--<li><a class="nav-link" href="/share/correlations_selection">Correlations Selection</a></li>-->
+            {% else %}
+            <!--<li><a class="nav-link" href="/random_forest">Random Forest</a></li>-->
+            <!--<li><a class="nav-link" href="/glmnet">Generalized Linear Model</a></li>-->
+            <!--<li><a class="nav-link" href="/fisher_exact">Fisher Exact Test</a></li>-->
+            <!--<li><a class="nav-link" href="/differential_selection">Differential Selection</a></li>-->
+            <!--<li><a class="nav-link" href="/correlations_selection">Correlations Selection</a></li>-->
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right" style="margin-right:0px;">
+        {% if current_user.is_authenticated %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.name }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/change_password">Change Password</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li><a href="/login">Login</a></li>
+        {% endif %}
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<div id="progress" class="waiting" style="display:none;">
+    <dt></dt>
+    <dd></dd>
+</div>

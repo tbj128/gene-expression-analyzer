@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>Correlations Selection - GEA</title>
+    <link href="/static/css/plugins/datatables.min.css" rel="stylesheet">
+</head>
+
+<body>
+{% include 'navigation.html' %}
+{% include 'loading-bar.html' %}
+
+<div id="editor" class="editor">
+    <h3 class="pad-sides pad-top"><i class="fa fa-th-large"></i>&nbsp;&nbsp;Correlations Selection <i class="fa fa-info-circle" data-toggle="popover" data-title="Correlations Selection" data-content="Calculates the correlation between each taxonomic group/OTU and the selected numerical metadata variable. Taxonomic groups/OTUs that correlate statistically with the numerical metadata will be selected.<br /><br />As an example, this is ideal for identifying taxonomic groups/OTUs that correlate with gene expression data." data-trigger="hover"></i></h3>
+
+    {% include 'project_list.html' %}
+
+    <hr/>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% include 'filtering_options.html' %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalysisParameters">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" role="button" data-toggle="collapse" href="#analysisParameters" aria-expanded="true" aria-controls="analysisParameters">
+                  Analysis Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="analysisParameters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAnalysisParameters">
+              <div class="panel-body">
+                <label class="control-label">Taxonomic Level <i class="fa fa-info-circle" data-toggle="popover" data-title="Taxonomic Level" data-content="The OTUs will be grouped together (by summing the OTU values) at the selected taxonomic level before the analysis is applied." data-trigger="hover"></i></label>
+                <select id="taxonomy" name="taxonomy" class="form-control pad-bottom">
+                    <option value="Kingdom">Kingdom</option>
+                    <option value="Phylum">Phylum</option>
+                    <option value="Class">Class</option>
+                    <option value="Order">Order</option>
+                    <option value="Family">Family</option>
+                    <option value="Genus">Genus</option>
+                    <option value="Species">Species</option>
+                    <option value="OTU" selected>OTU</option>
+                </select>
+
+                <label class="control-label">Numerical Variable to Correlate <i class="fa fa-info-circle" data-toggle="popover" data-title="Numerical Metadata to Correlate" data-content="Indicate which numerical sample metadata variable should be correlated against each taxonomic group/OTU" data-trigger="hover"></i></label>
+                <select id="expvar" name="expvar" class="form-control">
+                </select>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div id="display-no-catvar" class="display-notification project-empty" style="display:none;">
+        <div class="row">
+            <div class="col-md-3">
+                <i class="fa fa-exclamation-circle fa-4x"></i>
+            </div>
+            <div class="col-md-9">
+                <h3>Choose a Numerical Variable Attribute</h3>
+                <p>
+                    The correlations selection analysis will apply a <a href="https://docs.scipy.org/doc/scipy-0.15.1/reference/generated/scipy.stats.pearsonr.html" target="_blank">Pearson correlation</a> between the selected numerical variable and the taxonomic group/OTU abundance for every taxonomic group/OTU. <br /><br />By default, the correlations are applied to all samples. You can restrict the correlations to a particular group (eg. only correlate the 'Control' samples) by applying a data filter.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% include 'notifications.html' %}
+    {% include 'download_container.html' %}
+    <div id="analysis-container" class="analysis-container" style="display:none;">
+        <h4>Correlation Results with <span id="correlation-metadata"></span></h4>
+        <table id="correlation-table" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Taxonomic Group/OTU</th>
+                    <th>Pearson Correlation Coefficient</th>
+                    <th>P-Value</th>
+                    <th>Q-Value (FDR-Corrected)</th>
+                </tr>
+            </thead>
+            <tbody id="correlation-table-rows">
+            </tbody>
+        </table>
+    </div><!-- /.container -->
+
+    <div id="push" style="height:42px;"></div>
+</div>
+{% include 'footer-viz-d3v4.html' %}
+
+
+<!-- Include custom JS here -->
+<script src="/static/js/core.correlations.selection.js"></script>
+<script src="/static/js/plugins/datatables.min.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+</body>
+</html>

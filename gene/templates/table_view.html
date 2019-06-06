@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>Table - GEA</title>
+    <link href="/static/css/plugins/datatables.min.css" rel="stylesheet">
+</head>
+
+<body>
+{% include 'navigation.html' %}
+{% include 'loading-bar.html' %}
+
+<div id="editor" class="editor">
+    <h3 class="pad-sides pad-top"><i class="fa fa-th-large"></i>&nbsp;&nbsp;Table <i class="fa fa-info-circle" data-toggle="popover" data-title="Table" data-content="Renders the OTU table in a raw tabular format, after applying the specified filters and grouping parameters below" data-trigger="hover"></i></h3>
+
+    {% include 'project_list.html' %}
+
+    <hr/>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% include 'filtering_options.html' %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalysisParameters">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" role="button" data-toggle="collapse" href="#analysisParameters" aria-expanded="true" aria-controls="analysisParameters">
+                  Visualization Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="analysisParameters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAnalysisParameters">
+              <div class="panel-body">
+
+                <label class="control-label">Taxonomic Level <i class="fa fa-info-circle" data-toggle="popover" data-title="Taxonomic Level" data-content="The OTUs will be grouped together (by summing the OTU values) at the selected taxonomic level before the analysis is applied." data-trigger="hover"></i></label>
+                <select id="taxonomy" name="taxonomy" class="form-control pad-bottom">
+                    <option value="Kingdom">Kingdom</option>
+                    <option value="Phylum">Phylum</option>
+                    <option value="Class">Class</option>
+                    <option value="Order">Order</option>
+                    <option value="Family">Family</option>
+                    <option value="Genus">Genus</option>
+                    <option value="Species">Species</option>
+                    <option value="OTU" selected>OTU</option>
+                </select>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    {% include 'download_container.html' %}
+
+    {% include 'notifications.html' %}
+
+    <div id="too-large-message" class="display-notification project-empty" style="display:none;">
+        <div class="row">
+            <div class="col-md-3">
+                <i class="fa fa-exclamation-circle fa-4x"></i>
+            </div>
+            <div class="col-md-9">
+                <h3>Table Too Large To Display</h3>
+                <p>
+                    The table is too large to display in the browser. You can still download the table as a CSV by pressing the button above.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="analysis-container" class="analysis-container" style="min-height:500px;">
+        <table id="table-view" class="table table-hover">
+            <thead>
+                <tr id="table-view-header"></tr>
+            </thead>
+            <tbody id="table-view-rows">
+            </tbody>
+        </table>
+    </div><!-- /.container -->
+
+    <div id="push" style="height:42px;"></div>
+</div>
+
+{% include 'footer-viz-d3v4.html' %}
+
+<!-- Include custom JS here -->
+<script src="/static/js/core.table.js"></script>
+<script src="/static/js/plugins/datatables.min.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+</body>
+</html>

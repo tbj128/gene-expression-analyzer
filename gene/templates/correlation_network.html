@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'header.html' %}
+    <title>Correlation Network - GEA</title>
+</head>
+
+<style>
+
+.links line {
+  stroke-opacity: 0.6;
+}
+
+.links line:hover {
+  stroke: orange;
+  stroke-width: 2px;
+  stroke-opacity: 0.8;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.nodes circle:hover {
+  fill: orange;
+  stroke: orange;
+  opacity: 1;
+}
+
+.analysis-container-corr svg {
+    width:100%;
+    height:100%;
+}
+
+.tooltip {
+    position: absolute;
+    padding: 8px;
+    font-size: 12px;
+    background-color: #ddd;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+</style>
+
+<body>
+{% include 'navigation.html' %}
+{% include 'loading-bar.html' %}
+
+<div id="editor" class="editor">
+    <h3 class="pad-sides pad-top"><i class="fa fa-th-large"></i>&nbsp;&nbsp;Correlation Network <i class="fa fa-info-circle analysis-help" data-toggle="popover" data-title="Correlation Network" data-content="Generates a co-correlation network that shows the most positively and negatively correlated samples or taxonomic groups/OTUs (grouped at the indicated taxonomic level). Each link has a value between -1 and 1 inclusive" data-trigger="hover"></i></h3>
+
+    {% include 'project_list.html' %}
+
+    <hr/>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% include 'filtering_options.html' %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAnalysisParameters">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" role="button" data-toggle="collapse" href="#analysisParameters" aria-expanded="true" aria-controls="analysisParameters">
+                  Analysis Parameters
+                </a>
+              </h4>
+            </div>
+            <div id="analysisParameters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAnalysisParameters">
+              <div class="panel-body">
+                    <label class="control-label">Taxonomic Level <i class="fa fa-info-circle" data-toggle="popover" data-title="Taxonomic Level" data-content="The OTUs will be grouped together (by summing the OTU values) at the selected taxonomic level before the analysis is applied." data-trigger="hover"></i></label>
+                    <select id="taxonomy" name="taxonomy" class="form-control pad-bottom">
+                        <option value="Kingdom">Kingdom</option>
+                        <option value="Phylum">Phylum</option>
+                        <option value="Class">Class</option>
+                        <option value="Order">Order</option>
+                        <option value="Family">Family</option>
+                        <option value="Genus">Genus</option>
+                        <option value="Species">Species</option>
+                        <option value="OTU" selected>OTU</option>
+                    </select>
+
+                    <label class="control-label">Perform Correlation On <i class="fa fa-info-circle" data-toggle="popover" data-title="Choose Correlation Type" data-content="Indicate whether to create a network based on the correlations between samples or between taxonomic groups/OTUs." data-trigger="hover"></i></label>
+                    <select id="type" name="type" class="form-control">
+                        <option value="SampleID">Sample ID</option>
+                        <option value="Taxonomic">Taxonomic Groups/OTUs</option>
+                    </select>
+
+                    <div id="catvar-container" style="display:none;">
+                        <label class="control-label">Categorical Variable <i class="fa fa-info-circle" data-toggle="popover" data-title="Categorical Variable" data-content="Indicate which sample metadata should be used as the grouping variable. A separate donut plot is created for each unique metadata value." data-trigger="hover"></i></label>
+                        <select id="catvar" name="catvar" class="form-control">
+                        </select>
+                    </div>
+
+                    <label class="control-label">Correlation Cut-Off <i class="fa fa-info-circle" data-toggle="popover" data-title="Correlation Cut-Off" data-content="Determines when to draw a correlation line between two nodes in the network. This cutoff is based on the absolute value of the Pearson product-moment correlation coefficient."></i></label>
+                    <input class="form-control" id="cutoff" name="cutoff" type="number" value="0.75" max="1" step="0.01"/>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div id="display-error" class="display-notification project-empty" style="display:none;">
+        <div class="row">
+            <div class="col-md-3">
+                <i class="fa fa-exclamation-circle fa-4x"></i>
+            </div>
+            <div class="col-md-9">
+                <h3>No Correlations Found</h3>
+                <p>
+                    Try changing the correlation cut-off or filtering criteria and try again
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% include 'download_container.html' %}
+
+    <div id="analysis-container" class="analysis-container-corr tree-view" style="min-height:500px;">
+        <div class="alert alert-info" role="alert" id="heads-up" style="margin-left: 370px; margin-right: 10px;">
+            <strong>Head's Up</strong>
+            <ul>
+                <li>Try zooming out to see if there are any points off of the screen</li>
+                <li class="transient" id="item-removed-taxonomic-groups" style="display:none;">We have removed <strong id="removed-taxonomic-groups"></strong> taxonomic groups/OTUs because they did not correlate with any other taxonomic groups/OTUs at the selected correlation cut-off.</li>
+                <li class="transient" id="item-removed-samples" style="display:none;">We have removed <strong id="removed-samples"></strong> samples because they did not correlate with any other samples at the selected correlation cut-off.</li>
+                <li class="transient" id="item-actual-coefficient" style="display:none;">We are using a correlation coefficient of <strong id="actual-coefficient"></strong> to reduce the number of links being plotted</li>
+            </ul>
+        </div>
+        <svg height="700"></svg>
+    </div><!-- /.container -->
+
+    <div id="push" style="height:42px;"></div>
+</div>
+
+{% include 'footer-viz-d3v4.html' %}
+
+<!-- Include custom JS here -->
+<script src="/static/js/core.correlation.network.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--<script src="/static/js/ie10-viewport-bug-workaround.js"></script>-->
+
+</body>
+</html>
