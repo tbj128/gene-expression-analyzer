@@ -33,10 +33,14 @@
                 <select id="catvar" name="catvar" class="form-control">
                 </select>
 
-                <input id="taxonomy" type="hidden" value="OTU" />
-
                 <label class="control-label">Y-Axis Values  <i class="fa fa-info-circle" data-toggle="popover" data-title="Y-Axis Values" data-content="The numeric parameter that should be represented on the Y-axis. <br /><br />Note the special parameters below:<ul><li><strong>Gene Expression</strong> The sum of the specified gene abundance in each sample.</li><li><strong>Aggregate Abundance</strong> The total abundance of all genes within a sample</li><li><strong>Max/Min/Mean/Median</strong> The max/min/mean/median of all genes within a sample</li></ul>"></i></label>
                 <select id="yvals" name="yvals" class="form-control">
+                </select>
+
+                <label class="control-label">Aggregation Level  <i class="fa fa-info-circle" data-toggle="popover" data-title="" data-content=""></i></label>
+                <select id="taxonomy" name="taxonomy" class="form-control">
+                    <option value="Gene">Individual Genes</option>
+                    <option value="FunctionalAnnotation">Functional Annotation Group</option>
                 </select>
 
                 <div id="specific-taxonomy-container" style="margin-bottom: 200px;">
@@ -83,18 +87,26 @@
 
     <hr style="margin-top:0px; margin-bottom:0px;"/>
     <div id="stats-container" class="analysis-container" style="display:none;">
-        <h4><span id="stats-type"></span> Summary</h4>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Category 1</th>
-                <th>Category 2</th>
-                <th>P-Value</th>
-            </tr>
-            </thead>
-            <tbody id="stats-rows">
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Genes Displayed</h4>
+                <ul id="genes-displayed"></ul>
+            </div>
+            <div class="col-md-9">
+                <h4><span id="stats-type"></span> Summary</h4>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Category 1</th>
+                        <th>Category 2</th>
+                        <th>P-Value</th>
+                    </tr>
+                    </thead>
+                    <tbody id="stats-rows">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div><!-- /.container -->
 
     <div id="push" style="height:42px;"></div>

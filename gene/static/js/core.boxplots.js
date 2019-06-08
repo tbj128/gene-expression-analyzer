@@ -161,6 +161,11 @@ function updateAnalysis() {
                 loadSuccess();
                 renderBoxplots(abundancesObj, "", $("#yvals option:selected").text());
                 renderPvaluesTable(abundancesObj);
+
+                $("#genes-displayed").empty();
+                for (var i = 0; i < abundancesObj["genes"].length; i++) {
+                    $("#genes-displayed").append("<li>" + abundancesObj["genes"][i] + "</li>");
+                }
             }
         },
         error: function(err) {

@@ -7,12 +7,11 @@ from gene.model.taxonomy import Taxonomy
 import logging
 from multiprocessing import Pool
 from functools import partial
-import datetime
+import os
 import numpy as np
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-
 
 class OTUTable(object):
 
@@ -69,7 +68,8 @@ class OTUTable(object):
         logger.info("Finished filtering by metadata")
         t, h, s = self.filter_otu_table_by_taxonomic_items(t, h, s, self.otu_metadata.get_taxonomy_map(), user_request)
         logger.info("Finished filtering by taxonomic items")
-        t, h, s = self.aggregate_otu_table_at_taxonomic_level(t, h, s, user_request)
+        # TODO: No aggregation needed in the gene world
+        # t, h, s = self.aggregate_otu_table_at_taxonomic_level(t, h, s, user_request)
         logger.info("Finished aggregation")
         return t, h, s
 
@@ -79,9 +79,10 @@ class OTUTable(object):
         logger.info("Finished filtering by metadata")
         t, h, s = self.filter_otu_table_by_taxonomic_items(t, h, s, self.otu_metadata.get_taxonomy_map(), user_request)
         logger.info("Finished filtering by taxonomic items")
-        t, h, s = self.aggregate_otu_table_at_taxonomic_level(t, h, s, user_request)
+        # TODO: No aggregation needed in the gene world
+        # t, h, s = self.aggregate_otu_table_at_taxonomic_level(t, h, s, user_request)
         logger.info("Finished filtering by low counts")
-        t, h, s = self.aggregate_low_count_np(t, h, s, user_request)
+        # t, h, s = self.aggregate_low_count_np(t, h, s, user_request)
         logger.info("Finished aggregation")
         return t, h, s
 
@@ -213,8 +214,7 @@ class OTUTable(object):
 
     def aggregate_otu_table_at_taxonomic_level(self, base, headers, sample_labels, user_request):
         """
-        Returns an OTU table that has been aggregated at a specific taxonomic level (eg. this could return a
-        table that is grouped at the Family taxonomic level)
+        Returns an OTU table that has been transformed according to the functional annotations
         :param base:
         :param level:
         :return:

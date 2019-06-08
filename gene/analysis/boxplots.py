@@ -1,14 +1,21 @@
+import sqlite3
+
 import numpy as np
 
 from gene.analysis.analysis_base import AnalysisBase
 from gene.core.statistics import Statistics
 from gene.model.otu_table import OTUTable
 import logging
+import os
 import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
 
+GO_DB_NAME = "go.db"
+RELATIVE_PATH = os.path.dirname(os.path.realpath(__file__))
+RELATIVE_PATH = os.path.abspath(os.path.join(RELATIVE_PATH, os.pardir))  # Gets the parent folder
+GO_DB_PATH = os.path.join(RELATIVE_PATH, GO_DB_NAME)
 
 class Boxplots(AnalysisBase):
 
@@ -64,6 +71,21 @@ class Boxplots(AnalysisBase):
         level = int(user_request.level)
         taxonomiesOfInterest = user_request.get_custom_attr("yvalsSpecificTaxonomy")
         taxonomiesOfInterest = json.loads(taxonomiesOfInterest) if taxonomiesOfInterest != "" else []
+        taxonomiesOfInterest = set(taxonomiesOfInterest)
+
+        if level == 0:
+            # Fetch the functional annotations
+            db = sqlite3.connect(GO_DB_PATH)
+            c = db.cursor()
+            c.execute('SELECT gene FROM go_gene WHERE go_term in (\'' + "','".join(taxonomiesOfInterest) + '\')')
+            rows = c.fetchall()
+            genes_of_interest = {}
+            for row in rows:
+                genes_of_interest[row[0]] = True
+            db.close()
+            taxonomiesOfInterest = genes_of_interest
+
+
         colsOfInterest = []
         if yvals == "mian-taxonomy-abundance":
             i = 0
@@ -116,7 +138,7 @@ class Boxplots(AnalysisBase):
 
         logger.info("Calculated Ttest")
 
-        abundances_obj = {"abundances": abundances, "stats": statistics}
+        abundances_obj = {"abundances": abundances, "stats": statistics, "genes": list(taxonomiesOfInterest)}
         return abundances_obj
 
     def metadata_boxplots(self, user_request, yvals):

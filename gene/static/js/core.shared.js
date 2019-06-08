@@ -4,24 +4,12 @@
 var MINIMUM_FOR_TYPEAHEAD_MODE = 300;
 
 var taxonomyLevels = {
-    Kingdom: 0,
-    Phylum: 1,
-    Class: 2,
-    Order: 3,
-    Family: 4,
-    Genus: 5,
-    Species: 6,
-    OTU: -1
+    FunctionalAnnotation: 0,
+    Gene: -1
 };
 var taxonomyLevelsReverseLookup = {
-    "0": "Kingdom",
-    "1": "Phylum",
-    "2": "Class",
-    "3": "Order",
-    "4": "Family",
-    "5": "Genus",
-    "6": "Species",
-    "-1": "OTU",
+    "0": "FunctionalAnnotation",
+    "-1": "Gene",
     "-2": "none"
 };
 var taxonomiesMap = {};

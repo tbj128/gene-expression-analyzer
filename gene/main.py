@@ -740,7 +740,18 @@ def getOTUTableHeadersAtLevelShare():
 
 
 def getOTUTableHeadersAtLevel(user, pid, level):
-    headers = OTUTable.get_otu_table_headers_at_taxonomic_level(user, pid, level)
+    if level == -1:
+        # Aggregated at the individual gene level
+        headers = OTUTable.get_otu_table_headers_at_taxonomic_level(user, pid, level)
+    else:
+        # Return a list of Go functional annotations
+        headers = []
+        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+        root_dir = os.path.join(root_dir, "gene")
+        go_terms_file_loc = os.path.join(root_dir, "go_terms.txt")
+        with open(go_terms_file_loc, 'r') as f:
+            for line in f:
+                headers.append(line)
     return json.dumps(headers)
 
 # ---
