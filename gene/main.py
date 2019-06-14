@@ -722,7 +722,7 @@ def getMetadataHeadersWithType(user, pid):
 def getOTUTableHeadersAtLevelSecure():
     user = current_user.id
     pid = request.args.get('pid', '')
-    level = request.args.get('level', '')
+    level = int(request.args.get('level', -1))
     if pid == '' or level == '':
         return json.dumps({})
     return getOTUTableHeadersAtLevel(user, pid, level)
@@ -733,7 +733,7 @@ def getOTUTableHeadersAtLevelShare():
     if checkSharedValidity(request):
         uid = request.args.get('uid', '')
         pid = request.args.get('pid', '')
-        level = request.args.get('level', '')
+        level = int(request.args.get('level', -1))
         return getOTUTableHeadersAtLevel(uid, pid, level)
     else:
         abortNotShared()

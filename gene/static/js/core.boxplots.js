@@ -3,6 +3,7 @@
 // ============================================================
 var tagsInput;
 var expectedLoadFactor = 5000;
+var updateAnalysisLock = false;
 
 var statsTypes = {
     wilcoxon: "Wilcoxon Rank-Sum",
@@ -104,6 +105,10 @@ function createSpecificListeners() {
 // Required analysis entry-point method
 function updateAnalysis() {
     console.log("Updating analysis");
+    if (updateAnalysisLock) {
+        return;
+    }
+    updateAnalysisLock = true;
 
     showLoading(expectedLoadFactor);
     $("#stats-container").hide();
@@ -152,6 +157,7 @@ function updateAnalysis() {
         url: getSharedPrefixIfNeeded() + "/boxplots" + getSharedUserProjectSuffixIfNeeded(),
         data: data,
         success: function(result) {
+            updateAnalysisLock = false;
             $("#stats-type").text(statsTypes[$("#statisticalTest").val()]);
 
             var abundancesObj = JSON.parse(result);
@@ -171,6 +177,7 @@ function updateAnalysis() {
         error: function(err) {
             loadError();
             console.log(err);
+            updateAnalysisLock = false;
         }
     });
 }
